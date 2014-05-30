@@ -265,6 +265,21 @@ ko.applyBindings(new StarRating());
                     	</code></pre>
 					</section>
 				</section>
+
+
+				
+				<section>
+					<h2>Subscribe to observables</h2>
+					<pre><code data-trim>
+var starRating = new StarRating()
+starRating.amount.subscribe(function(newValue) {
+  $('pre').append('Changed to ' + newValue + " on " + (new Date()) + "\n")
+})
+ko.applyBindings(starRating);					</code></pre>
+					<div class="sample"><a href="http://codepen.io/anon/pen/Kjren">&#x1F648;</a></div>
+				</section>
+
+
 			</div>
 
 		</div>

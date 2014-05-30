@@ -112,7 +112,7 @@ self.flipFlopper = ko.computed({
   read: function() {
     if (self.flag) return self.flip()
       return self.flop()
-  },</code><code class="javascript" class="fragment grow">  deferEvaluation: true</code><code class="javascript" data-trim>
+  },</code><code class="javascript" class="fragment grow">    deferEvaluation: true</code><code class="javascript" data-trim>
 })
 						</code></pre>
 					</section>
@@ -262,7 +262,7 @@ ko.applyBindings(new StarRating());
 						<pre><code class="html" data-trim>
 &lt;span data-bind="style: { color: profit() &lt; 0 ? 'red' : 'black' },
                  text: value"&gt;&lt;/span&gt;
-                    	</code></pre>
+                  	</code></pre>
 					</section>
 				</section>
 
@@ -389,27 +389,114 @@ planet.largestCountry.subscribe(function(newValue) {
 
 				<section>
 					<h1>Multiple bindings per page</h1>
+				
+					<pre><code class="html">
+&lt;div id="id1"&gt;&hellip;&lt;/div&gt;
+&lt;div id="id2"&gt;&hellip;&lt;/div&gt;
+					</code></pre>
+					<pre><code class="javascript">
+ko.applyBindings(viewModel1, document.getElementById('id1'))
+ko.applyBindings(viewModel2, $('#id2')[0])
+					</code></pre>
+				
+					<div class="sample">
+						<a href="http://codepen.io/anon/pen/pGeqE?editors=101">&#x1F648;</a>
+						<a href="http://codepen.io/anon/pen/KIkjh?editors=101">&#x1F649;</a>
+					</div>
 				</section>
 
 
+				
 				<section>
 					<section>
 						<h1>Arrays</h1>
+						<h1>&#x1F42E;<small>&#x1F4A9;</small></h1>
 					</section>
 					<section>
 						<h2>Copying</h2>
+						<pre><code class="javascript">
+var viewModel = {
+    array1: ko.observableArray(["one", "two"]),
+    array2: ko.observableArray()
+};
+
+// this makes array1 refer to array2
+viewModel.array1(viewModel.array2());
+
+// cloning function
+viewModel.array1(viewModel.array2().slice(0));
+						</code></pre>
 					</section>
 					<section>
 						<h2>Looping</h2>
+						<p>Never loop over an array in JS using <code>for(var x in arr)</code>. </p>
+						<p>Use:
+							<ul>
+								<li><code>arr.forEach</code> (ES+)</li>
+								<li><code>ko.utils.arrayForEach</code></li>
+								<li>jQuery's <code>$.each</code></li>
+								<li>a simple <code>for</code> loop</li>
+							</ul>
+						</p>
+					</section>
+					<section>
+						<h2>Looping</h2>
+						<pre><code class="javascript" data-trim>
+var total=0, elems = self.entries();
+// forEach
+self.entries().forEach(function(entry) {
+    total += parseFloat(entry.price(), 10)
+})
+// ko.utils
+ko.utils.arrayForEach(self.entries(), function(entry) {
+    total += parseFloat(entry.price(), 10)
+})
+// jQuery $.each
+$.each(self.entries(), function(key, value) {
+    total += parseFloat(value.price(), 10)
+})
+// simple for loop
+for(var i=0; i &lt; elems.length; i++) {
+    total += parseFloat(elems[i].price(), 10)
+}
+
+						</code></pre>
 					</section>
 					<section>
 						<h2>Filtering</h2>
+						<pre><code class="javascript" data-trim>
+var dollarMenu = ko.utils.arrayFilter(self.entries(), function(item) {
+    return item.price() &lt; 1.5;
+})
+	</code></pre>
 					</section>
 					<section>
 						<h2>Find first match</h2>
+						<pre><code class="javascript" data-trim>
+var chefsChoice = ko.utils.arrayFirst(self.entries(), function(item) {
+    return item.name().contains('burger')
+})
+	</code></pre>
 					</section>
 					<section>
 						<h2>Transform arrays</h2>
+						<pre><code class="javascript" data-trim>
+// equivalent to LINQ's Select
+var countriesAndPresidents = ko.utils.arrayMap(
+    self.countries,
+    function(country) {
+        return country.president().name() + ', president of ' + country.name();
+    }
+);
+
+// can flatten arrays too (LINQ SelectMany)
+var allPresidentsEver = ko.utils.arrayMap(
+    self.countries(),
+    function(country) {
+      return self.historicPresidents();
+    }
+)
+	</code></pre>
 					</section>
 				</section>
 

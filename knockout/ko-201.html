@@ -34,6 +34,10 @@
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
 		<![endif]-->
+		<style type="text/css">
+		.sample { text-align: right; }
+		.sample a:before { context: "&#x1F648;" }
+		</style>
 	</head>
 
 	<body>
@@ -46,8 +50,111 @@
 					<h1>Knockout.js Level 2</h1>
 					<h3>Incrementally <strike>harder</strike> not easier</h3>
 					<p><small>Created by <a href="http://philipm.at">Philip Mateescu</a> using <a href="https://github.com/hakimel/reveal.js">reveal.js</a><br/>
-						<small>&hellip;and a lot of arcane knowledge.</small></small></p>
+						<small>&hellip;and a lot of arcane knowledge.</small>
+					</small></p>
 				</section>
+				<section>
+					<section>
+						<h1>ko.computed</h1>
+						<p>Computed observables
+						<ul>
+							<li>dependent on one or more other observables</li>
+							<li>automatically updated whenever any of the dependencies change</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Simple to use</h2>
+						<pre><code data-trim>
+function Person(firstName, lastName) {
+  var self = this;
+  self.first = ko.observable(firstName);
+  self.last = ko.observable(lastName);
+  self.full = ko.computed(function() {
+    return self.first() + ' ' + self.last();
+  })
+}
+
+ko.applyBindings(new Person("", "McLovin"));
+						</code></pre>
+						<div class="sample"><a href="http://codepen.io/anon/pen/iIxfk?editors=101">&#x1F648;</a></div>
+					</section>
+					<section>
+						<h2>Works with observable arrays too</h2>
+						<pre><code data-trim>
+self.entries = ko.observableArray()
+self.total = ko.computed(function() {
+  var _total = 0;
+  for(var i = 0; i &lt; self.entries().length; i++) {
+    var price = parseFloat(this.entries()[i].price(), 10)
+    if (!isNaN(price)) _total += price
+  }
+  return _total
+});
+						</code></pre>						
+						<div class="sample"><a href="http://codepen.io/anon/pen/aHzmg?editors=101">&#x1F648;</a></div>
+					</section>
+					<section>
+						<h2>Deferred evaluation</h2>
+						<p>The value of a computed observable is calculated <em>as soon as the computed is created</em>
+						and is updated only if any of the observables that were evaluated during the last execution changes.</p>
+						<pre><code data-trim>
+self.flipFlopper = ko.computed(function(){
+  if (self.flag) return self.flip()
+  return self.flop()
+})
+						</code></pre>
+						<p class="fragment roll-in"><code>deferEvaluation</code>: postpones the evaluation of a computed observable until the first time it is accessed.</p>
+						<pre class="fragment roll-in"><code data-trim>
+self.flipFlopper = ko.computed({
+  read: function() {
+    if (self.flag) return self.flip()
+      return self.flop()
+  },</code><code class="fragment grow">  deferEvaluation: true</code><code data-trim>
+})
+						</code></pre>
+					</section>
+					<section>
+						<h2>Writeable observables</h2>
+						<h3>They're awesome!</h3>
+						<pre><code data-trim>
+this.formattedPrice = ko.computed({
+  read: function () {
+    return '$' + self.price().toFixed(2);
+  },
+  write: function (value) {
+    value = parseFloat(value.replace(/[^\.\d]/g, ""));
+    self.price(isNaN(value) ? 0 : value); 
+  },
+});
+</code></pre>
+
+						<p class="fragment highlight-red">Avoid them.</p>
+					</section>
+					<section>
+						<h2>What if?</h2>
+						<dl class="fragment fade-in">
+							<dt>Don't want to be updated beyond construction?</dt>
+							<dl><code class="fragment highlight-green">aProperty.peek()</code></dl>
+						</dl>
+						<dl class="fragment fade-in">
+							<dt>My dependencies change too often!</dt>
+							<dl><code class="fragment highlight-green">aComputedOrObs.extend({ rateLimit: 500 })</code></dl>
+						</dl>
+						<dl class="fragment fade-in">
+							<dt>I want to know if a property is ko.computed?</dt>
+							<dl><code class="fragment highlight-green">ko.isComputed(self.aProperty)</code></dl>
+						</dl>
+						<dl class="fragment fade-in">
+							<dt>I want to know if a property really is ko.computed?</dt>
+							<dl><code class="fragment highlight-green">aComputed.isActive() or aComputed.getDependenciesCount()</code></dl>
+						</dl>
+						<dl class="fragment fade-in">
+							<dt>The first time is special?</dt>
+							<dl><code class="fragment highlight-green">aComputed.isInitial()</code></dl>
+						</dl>
+					</section>
+				</section>
+
 			</div>
 
 		</div>

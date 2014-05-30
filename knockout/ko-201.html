@@ -53,6 +53,9 @@
 						<small>&hellip;and a lot of arcane knowledge.</small>
 					</small></p>
 				</section>
+
+				
+				
 				<section>
 					<section>
 						<h1>ko.computed</h1>
@@ -155,6 +158,53 @@ this.formattedPrice = ko.computed({
 					</section>
 				</section>
 
+
+				
+				<section>
+					<h1>Capture <em>this</em></h1>
+					<pre class="fragment shrink"><code data-trim>
+function Person(firstName, lastName) {
+  // this. is Person instance
+  this.first = ko.observable(firstName);
+  this.last = ko.observable(lastName);
+  this.full = ko.computed(function() {
+    // this. is window.
+    // FAIL
+    return this.first() + ' ' + this.last();
+  })
+}
+ko.applyBindings(new Person("", "McLovin"));
+					</code></pre>
+					<pre class="fragment fade-in"><code data-trim>
+function Person(firstName, lastName) {
+  // this. is Person instance
+  var self = this;
+  this.first = ko.observable(firstName);
+  self.last = ko.observable(lastName);
+  self.full = ko.computed(function() {
+    // this. is window. but self is Person instance
+    return self.first() + ' ' + self.last();
+  })
+}
+					</code></pre>
+					<div class="sample"><a href="http://codepen.io/anon/pen/ugvas?editors=101">&#x1F648;</a></div>
+				</section>
+
+
+
+				<section>
+					<h2>Simple object binding</h2>
+					<pre><code data-trim>
+var person = {
+  'first': ko.observable(),
+  'last': ko.observable(),
+}
+person.first('Foo');
+person.last('Bar');
+ko.applyBindings(person);
+					</code></pre>
+				</section>
+				
 			</div>
 
 		</div>

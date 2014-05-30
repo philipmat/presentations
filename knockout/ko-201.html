@@ -204,7 +204,67 @@ person.last('Bar');
 ko.applyBindings(person);
 					</code></pre>
 				</section>
+
 				
+				
+				<section>
+					<section>
+						<h1>data-bind and CSS</h1>
+					</section>
+					<section>
+						<h2>class binding: &#x1F44D;</h2>
+						<h3>Best approach</h3>
+						<h3>&#x1F603;&#x1F389;&#x1F37B;</h3>
+						<p>&nbsp;</p>
+						<h2>style binding: &#x1F44E;</h2>
+						<h3>&#x1F443;&#x1F4A9;&#x1F622;</h3>
+					</section>
+					<section>
+						<h2>class binding: inline</h2>
+						<pre><code data-trim>
+&lt;span data-bind="css: { profitWarning: profit() &lt; 0 },
+                 text: value"&gt;&lt;/span&gt;
+                    	</code></pre>
+                    	<p>Meh</p>
+					</section>
+					<section>
+						<h2>class binding: to property</h2>
+						<p><small>HTML</small></p>
+						<pre><code data-trim>
+&lt;p&gt;
+  Star rating 1-5: 
+  &lt;input type="text" data-bind="value: amount, css: howImpressive"/&gt;
+&lt;/p&gt;  
+						</code></pre>
+						<p><small>JavaScript</small></p>
+						<pre><code data-trim>
+var StarRating = function() {
+  var self = this;
+  self.amount = ko.observable();
+  self.howImpressive = ko.computed(function() {
+    console.log(self.amount())
+    switch(parseInt(self.amount(), 10)) {
+           case 1: return "eyes-bleeding";
+           case 2: return "fail";
+           case 3: return "meh";
+           case 4: return "enjoyable";
+           case 5: return "firefly-good";
+           default : return "epic-fail";
+    }
+  })
+}
+ko.applyBindings(new StarRating());
+						</code></pre>
+						<div class="sample"><a href="http://codepen.io/anon/pen/mIDsE">&#x1F648;</a></div>
+					</section>
+					<section>
+						<h2>Individual style attributes</h2>
+						<pre><code data-trim>
+&lt;span data-bind="style: { color: profit() &lt; 0 ? 'red' : 'black' },
+                 text: value"&gt;&lt;/span&gt;
+                    	</code></pre>
+					</section>
+				</section>
 			</div>
 
 		</div>

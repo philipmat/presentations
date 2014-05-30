@@ -504,6 +504,37 @@ var allPresidentsEver = ko.utils.arrayMap(
 
 				<section>
 					<h1>$root, $parent, $data</h1>
+					<pre>
+galaxy = { 
+  sectors: [
+    { name: 'Corellian',
+      planets: [
+        { name: 'Drall', places: ['Boiling Sea', "Marcha's Estate"] },
+      ],
+    },
+  ]
+}
+&lt;ul data-bind="foreach: sectors"&gt;
+  &lt;li data-bind="text: name"&gt;</pre>
+
+					<h3>Galaxy <small class="fragment fade-in" data-fragment-index="8"> &laquo; <code>$root = $parents[2]</code></small></h3>
+					<p>
+						<ul class="fragment fade-in" data-fragment-index="1">
+							<li>Sector: Corelian. <span class="fragment fade-in" data-fragment-index="7"> &laquo; <code>$parents[1]</code></span>
+								<ul class="fragment fade-in" data-fragment-index="2">
+									<li>Planet: Drall. <span class="fragment fade-in" data-fragment-index="5"> &laquo; <code>$parent</code>
+										<span class="fragment fade-in" data-fragment-index="6"> <code>= $parents[0]</code>	
+										<ul class="fragment fade-in" data-fragment-index="3">
+											<li>Boiling Sea <span class="fragment fade-in" data-fragment-index="4"> &laquo; <code>data-bind="text: $data"</code></span></li>
+											<li>Marcha's Estate</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</p>
+					
+					<div class="sample"><a href="http://codepen.io/anon/pen/bywBe?editors=101">&#x1F648;</a></div>
 				</section>
 
 

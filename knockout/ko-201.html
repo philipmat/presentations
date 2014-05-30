@@ -67,7 +67,7 @@
 					</section>
 					<section>
 						<h2>Simple to use</h2>
-						<pre><code data-trim>
+						<pre><code class="javascript" data-trim>
 function Person(firstName, lastName) {
   var self = this;
   self.first = ko.observable(firstName);
@@ -83,7 +83,7 @@ ko.applyBindings(new Person("", "McLovin"));
 					</section>
 					<section>
 						<h2>Works with observable arrays too</h2>
-						<pre><code data-trim>
+						<pre><code class="javascript" data-trim>
 self.entries = ko.observableArray()
 self.total = ko.computed(function() {
   var _total = 0;
@@ -100,26 +100,26 @@ self.total = ko.computed(function() {
 						<h2>Deferred evaluation</h2>
 						<p>The value of a computed observable is calculated <em>as soon as the computed is created</em>
 						and is updated only if any of the observables that were evaluated during the last execution changes.</p>
-						<pre><code data-trim>
+						<pre><code class="javascript" data-trim>
 self.flipFlopper = ko.computed(function(){
   if (self.flag) return self.flip()
   return self.flop()
 })
 						</code></pre>
 						<p class="fragment roll-in"><code>deferEvaluation</code>: postpones the evaluation of a computed observable until the first time it is accessed.</p>
-						<pre class="fragment roll-in"><code data-trim>
+						<pre class="fragment roll-in"><code class="javascript" data-trim>
 self.flipFlopper = ko.computed({
   read: function() {
     if (self.flag) return self.flip()
       return self.flop()
-  },</code><code class="fragment grow">  deferEvaluation: true</code><code data-trim>
+  },</code><code class="javascript" class="fragment grow">  deferEvaluation: true</code><code class="javascript" data-trim>
 })
 						</code></pre>
 					</section>
 					<section>
 						<h2>Writeable observables</h2>
 						<h3>They're awesome!</h3>
-						<pre><code data-trim>
+						<pre><code class="javascript" data-trim>
 this.formattedPrice = ko.computed({
   read: function () {
     return '$' + self.price().toFixed(2);
@@ -137,23 +137,23 @@ this.formattedPrice = ko.computed({
 						<h2>What if?</h2>
 						<dl class="fragment fade-in">
 							<dt>Don't want to be updated beyond construction?</dt>
-							<dl><code class="fragment highlight-green">aProperty.peek()</code></dl>
+							<dl><code class="javascript" class="fragment highlight-green">aProperty.peek()</code></dl>
 						</dl>
 						<dl class="fragment fade-in">
 							<dt>My dependencies change too often!</dt>
-							<dl><code class="fragment highlight-green">aComputedOrObs.extend({ rateLimit: 500 })</code></dl>
+							<dl><code class="javascript" class="fragment highlight-green">aComputedOrObs.extend({ rateLimit: 500 })</code></dl>
 						</dl>
 						<dl class="fragment fade-in">
 							<dt>I want to know if a property is ko.computed?</dt>
-							<dl><code class="fragment highlight-green">ko.isComputed(self.aProperty)</code></dl>
+							<dl><code class="javascript" class="fragment highlight-green">ko.isComputed(self.aProperty)</code></dl>
 						</dl>
 						<dl class="fragment fade-in">
 							<dt>I want to know if a property really is ko.computed?</dt>
-							<dl><code class="fragment highlight-green">aComputed.isActive() or aComputed.getDependenciesCount()</code></dl>
+							<dl><code class="javascript" class="fragment highlight-green">aComputed.isActive() or aComputed.getDependenciesCount()</code></dl>
 						</dl>
 						<dl class="fragment fade-in">
 							<dt>The first time is special?</dt>
-							<dl><code class="fragment highlight-green">aComputed.isInitial()</code></dl>
+							<dl><code class="javascript" class="fragment highlight-green">aComputed.isInitial()</code></dl>
 						</dl>
 					</section>
 				</section>
@@ -162,7 +162,7 @@ this.formattedPrice = ko.computed({
 				
 				<section>
 					<h1>Capture <em>this</em></h1>
-					<pre class="fragment shrink"><code data-trim>
+					<pre class="fragment shrink"><code class="javascript" data-trim>
 function Person(firstName, lastName) {
   // this. is Person instance
   this.first = ko.observable(firstName);
@@ -175,7 +175,7 @@ function Person(firstName, lastName) {
 }
 ko.applyBindings(new Person("", "McLovin"));
 					</code></pre>
-					<pre class="fragment fade-in"><code data-trim>
+					<pre class="fragment fade-in"><code class="javascript" data-trim>
 function Person(firstName, lastName) {
   // this. is Person instance
   var self = this;
@@ -194,7 +194,7 @@ function Person(firstName, lastName) {
 
 				<section>
 					<h2>Simple object binding</h2>
-					<pre><code data-trim>
+					<pre><code class="javascript" data-trim>
 var person = {
   'first': ko.observable(),
   'last': ko.observable(),
@@ -221,7 +221,7 @@ ko.applyBindings(person);
 					</section>
 					<section>
 						<h2>class binding: inline</h2>
-						<pre><code data-trim>
+						<pre><code class="html" data-trim>
 &lt;span data-bind="css: { profitWarning: profit() &lt; 0 },
                  text: value"&gt;&lt;/span&gt;
                     	</code></pre>
@@ -230,14 +230,14 @@ ko.applyBindings(person);
 					<section>
 						<h2>class binding: to property</h2>
 						<p><small>HTML</small></p>
-						<pre><code data-trim>
+						<pre><code class="html" data-trim>
 &lt;p&gt;
   Star rating 1-5: 
   &lt;input type="text" data-bind="value: amount, css: howImpressive"/&gt;
 &lt;/p&gt;  
 						</code></pre>
 						<p><small>JavaScript</small></p>
-						<pre><code data-trim>
+						<pre><code class="javascript" data-trim>
 var StarRating = function() {
   var self = this;
   self.amount = ko.observable();
@@ -259,7 +259,7 @@ ko.applyBindings(new StarRating());
 					</section>
 					<section>
 						<h2>Individual style attributes</h2>
-						<pre><code data-trim>
+						<pre><code class="html" data-trim>
 &lt;span data-bind="style: { color: profit() &lt; 0 ? 'red' : 'black' },
                  text: value"&gt;&lt;/span&gt;
                     	</code></pre>
@@ -270,32 +270,119 @@ ko.applyBindings(new StarRating());
 				
 				<section>
 					<h2>Subscribe to observables</h2>
-					<pre><code data-trim>
+					<pre><code class="javascript" data-trim>
 var starRating = new StarRating()
 starRating.amount.subscribe(function(newValue) {
   $('pre').append('Changed to ' + newValue + " on " + (new Date()) + "\n")
 })
 ko.applyBindings(starRating);					</code></pre>
+					
 					<div class="sample"><a href="http://codepen.io/anon/pen/Kjren">&#x1F648;</a></div>
 				</section>
 
 
 				<section>
-					<section><h1>Composite View-Models</h1></section>
+					<section><h1>Composite<br/>
+							View-Models</h1></section>
 					<section>
 						<h2>Example</h2>
+						<pre><code class="javascript" data-trim>
+function Person(name) {
+  this.name = ko.observable(name);
+}
+var Country = function(name, leader) {
+  this.name = ko.observable(name)
+  this.leader = ko.observable(leader)
+}
+var planet = {
+  name: ko.observable(),
+  largestCountry: ko.observable(),
+}
+// initialize
+planet.name('Middle-Earth')
+planet.largestCountry(new Country('Mordor', new Person('Sauron')))
+
+ko.applyBindings(planet)	</code></pre>
+						<pre><code class="html">
+&lt;div&gt;The largest country on planet 
+  &lt;span data-bind="text: name"&gt;&lt;/span&gt; is 
+  &lt;span data-bind="text: largestCountry().name"&gt;&lt;/span&gt; 
+  and its leader is 
+  &lt;span data-bind="text: largestCountry().leader().name"&gt;&lt;/span&gt;.&lt;/div&gt;
+						</code></pre>
+					
+						<div class="sample"><a href="http://codepen.io/anon/pen/afAmK?editors=101">&#x1F648;</a></div>
 					</section>
 					<section>
-						<h2>Unavailable (yet) sub-models</h2>
-					</section>
+						<h2>Sub-models not (yet) available</h2>
+						<pre><code class="javascript" data-trim>
+function Person(name) {
+  this.name = ko.observable(name);
+}
+var Country = function(name, leader) {
+  this.name = ko.observable(name)
+  this.leader = ko.observable(leader)
+}
+var planet = {
+  name: ko.observable(),
+  largestCountry: ko.observable(),
+}
+ko.applyBindings(planet);
+
+$.ajax('/planet-stats/Middle-Earth', function(data) {
+    // { "planet": "Middle-Earth", "country": "Mordor", "leader": "Sauron" }
+    planet.name(data['planet'])
+    planet.largestCountry(new Country(data['country'], new Person(data['leader'])))
+})
+						</code></pre>
+						</section>
 					<section>
 						<h3>Solution 1: using computed</h3>
+						<pre><code class="javascript">
+planet.largestCountryName = ko.computed(function() {
+  if (planet.largestCountry()) return planet.largestCountry().name();
+  return "Don't know";
+})	
+						</code></pre>
+					
+						<div class="sample"><a href="http://codepen.io/anon/pen/bywBe?editors=101">&#x1F648;</a></div>
 					</section>
 					<section>
 						<h3>Solution 2: using subscriptions</h3>
+						<pre><code class="javascript">
+var planet = {
+  name: ko.observable(),
+  largestCountry: ko.observable(),
+  largestCountryName: ko.observable(),
+  largestCountryLeaderName: ko.observable(),
+}
+
+planet.largestCountry.subscribe(function(newValue) {
+  console.log(newValue);
+  if (newValue) {
+    planet.largestCountryName(newValue.name())
+    planet.largestCountryLeaderName(newValue.leader().name())
+  }
+})
+						</code></pre>
+					
+						<div class="sample"><a href="http://codepen.io/anon/pen/noEJC?editors=101">&#x1F648;</a></div>
 					</section>
 					<section>
 						<h3>Solution 3: using <em>with</em></h3>
+						<pre><code class="html">
+&lt;div&gt;The largest country on planet &lt;span data-bind="text: name"&gt;&lt;/span&gt; is 
+  &lt;!-- ko with: largestCountry --&gt;
+  &lt;span data-bind="text: name"&gt;&lt;/span&gt;
+  &lt;!-- /ko --&gt;
+  and its leader is 
+  &lt;!-- ko with: largestCountry --&gt;
+  &lt;span data-bind="text: leader().name"&gt;&lt;/span&gt;
+  &lt;!-- /ko --&gt;
+  .&lt;/div&gt;
+						</code></pre>
+					
+						<div class="sample"><a href="http://codepen.io/anon/pen/CrjKc?editors=101">&#x1F648;</a></div>
 					</section>
 				</section>
 
@@ -329,7 +416,7 @@ ko.applyBindings(starRating);					</code></pre>
 
 
 				<section>
-					<h1>1root, 1parent, 1data</h1>
+					<h1>$root, $parent, $data</h1>
 				</section>
 
 

@@ -137,23 +137,23 @@ this.formattedPrice = ko.computed({
 						<h2>What if?</h2>
 						<dl class="fragment fade-in">
 							<dt>Don't want to be updated beyond construction?</dt>
-							<dl><code class="javascript" class="fragment highlight-green">aProperty.peek()</code></dl>
+							<dl><code class="javascript fragment highlight-green">aProperty.peek()</code></dl>
 						</dl>
 						<dl class="fragment fade-in">
 							<dt>My dependencies change too often!</dt>
-							<dl><code class="javascript" class="fragment highlight-green">aComputedOrObs.extend({ rateLimit: 500 })</code></dl>
+							<dl><code class="javascript fragment highlight-green">aProperty.extend({ rateLimit: 500 })</code></dl>
 						</dl>
 						<dl class="fragment fade-in">
 							<dt>I want to know if a property is ko.computed?</dt>
-							<dl><code class="javascript" class="fragment highlight-green">ko.isComputed(self.aProperty)</code></dl>
+							<dl><code class="javascript fragment highlight-green">ko.isComputed(self.aProperty)</code></dl>
 						</dl>
 						<dl class="fragment fade-in">
 							<dt>I want to know if a property really is ko.computed?</dt>
-							<dl><code class="javascript" class="fragment highlight-green">aComputed.isActive() or aComputed.getDependenciesCount()</code></dl>
+							<dl><code class="javascript fragment highlight-green">aComputed.isActive() or aComputed.getDependenciesCount()</code></dl>
 						</dl>
 						<dl class="fragment fade-in">
 							<dt>The first time is special?</dt>
-							<dl><code class="javascript" class="fragment highlight-green">aComputed.isInitial()</code></dl>
+							<dl><code class="javascript fragment highlight-green">aComputed.isInitial()</code></dl>
 						</dl>
 					</section>
 				</section>
@@ -410,7 +410,8 @@ ko.applyBindings(viewModel2, $('#id2')[0])
 				<section>
 					<section>
 						<h1>Arrays</h1>
-						<h1>&#x1F42E;<small>&#x1F4A9;</small></h1>
+						<h2>1. They're &ldquo;arrays&rdquo; &#x1F4A9;</h2>
+						<h2>2. They stink.  &#x1F637;</h2>
 					</section>
 					<section>
 						<h2>Copying</h2>
@@ -543,9 +544,45 @@ galaxy = {
 				<section>
 					<section>
 						<h1>Templates</h1>
+						<pre class="fragment roll-in"><code class="html" data-trim>
+&lt;ul data-bind="template: { name: 'sector-list', foreach: sectors }"&gt;
+&lt;/ul&gt;
+
+&lt;script type="text/html" id="sector-list"&gt;
+  &lt;-- $data is sector --&gt;
+  &lt;li data-bind="text: name"&gt;&lt;/li&gt;
+&lt;/script&gt;
+						</code></pre>
+						
+						<div class="sample"><a href="http://codepen.io/anon/pen/liaEx?editors=101">&#x1F648;</a></div>
 					</section>
 					<section>
 						<h2>Show/hide sections</h2>
+						<p>&nbsp;</p>
+						<h3>Using the <em>visible:</em> binding</h3>
+						<pre><code data-trim>
+this.vehicleType = ko.observable()
+  &hellip;
+&lt;div data-bind="visible: vehicleType"&gt;&hellip;&lt;/div&gt;
+						</code></pre>
+						<p>&nbsp;</p>
+						<div class="fragment roll-in">
+							<h3>Using templates</h3>
+							<pre><code data-trim>
+ko.engineType = ko.observable()
+  &hellip;
+&lt;div data-bind="template: { 
+                   name: engineType,
+                   data: engineOptions }"&gt;&hellip;&lt;/div&gt;
+&lt;script type="text/html" id="electric"&gt;
+  &hellip;
+&lt;/script&gt;
+							</code></pre>
+						</div>
+						
+
+
+						<div class="sample"><a href="http://codepen.io/anon/pen/svLhe?editors=101">&#x1F648;</a></div>
 					</section>
 				</section>
 
@@ -555,15 +592,57 @@ galaxy = {
 					</section>
 					<section>
 						<h2>Unwrapping observables</h2>
+						<pre><code class="javascript" data-trim>
+var obj = {
+  prop1: 'foo',
+  prop2: ko.observable('bar'),
+}
+addPrefix('_', obj, 'prop1')
+&hellip;
+function addPrefix(prefix, subject, withPropertyName) {
+  var value = '_' + subject[withPropertyName]
+  // fails for 'prop2'
+  var value = '_' + subject[withPropertyName]();
+  // fails for 'prop1'
+  
+  var value = '_' + ko.utils.unwrapObservable(subject[withPropertyName])
+}
+						</code></pre>
 					</section>
 					<section>
 						<h2>ko.toJS &amp; ko.toJSON</h2>
+						<pre><code class="javascript" data-trim>
+var data = ko.toJSON(contractViewModel)
+$.post("/Contracts/Tariff", data, function() {
+  &hellip;
+})
+
+var copy = ko.toJS(contractViewModel);
+copy.ContractId = null;
+$.post("/Contracts/Tariff", data, function() {
+  &hellip;
+})
+						</code></pre>
+					</section>
+					<section>
+						<h2>Extending observables</h2>
+						<pre><code class="javascript" data-trim>
+						</code></pre>
+					</section>
+					<section>
+						<h2>Custom functions</h2>
+						<pre><code class="javascript" data-trim>
+						</code></pre>
 					</section>
 					<section>
 						<h2>ko.mapping</h2>
+						<pre><code class="javascript" data-trim>
+						</code></pre>
 					</section>
 					<section>
-						<h2>Custom mappings</h2>
+						<h2>Custom bindings</h2>
+						<pre><code class="javascript" data-trim>
+						</code></pre>
 					</section>
 				</section>
 			</div>

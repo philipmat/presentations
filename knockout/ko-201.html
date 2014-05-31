@@ -659,13 +659,15 @@ function TaskList() {
 						</code></pre>
 					</section>
 					<section>
-						<h2>ko.mapping</h2>
-						<pre><code class="javascript" data-trim>
-						</code></pre>
-					</section>
-					<section>
-						<h2>Custom bindings</h2>
-						<pre><code class="javascript" data-trim>
+						<h2>Bindings without containers</h2>
+						<pre><code class="html" data-trim>
+&lt;label&gt;Account Codes&lt;/label&gt;
+&lt;!-- ko foreach: AccountCodeTypes --&gt;
+  &lt;input type="text" data-bind="attr: { name: $data }" /&gt;
+  &lt;!-- ko if: ($index() &lt;= ($parent.AccountCodeTypes().length - 1)) --&gt;
+  . 
+  &lt;!-- /ko --&gt;
+&lt;!-- /ko --&gt;
 						</code></pre>
 					</section>
 				</section>

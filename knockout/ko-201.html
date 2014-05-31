@@ -618,7 +618,7 @@ $.post("/Contracts/Tariff", data, function() {
 })
 
 var copy = ko.toJS(contractViewModel);
-copy.ContractId = null;
+copy.AgreementId = null;
 $.post("/Contracts/Tariff", data, function() {
   &hellip;
 })
@@ -627,11 +627,35 @@ $.post("/Contracts/Tariff", data, function() {
 					<section>
 						<h2>Extending observables</h2>
 						<pre><code class="javascript" data-trim>
+ko.extenders.numeric = function(target, precision) {
+  // http://knockoutjs.com/documentation/extenders.html
+}
+
+var vm = {
+  amount: ko.observable().extend({ numeric: 2 });
+}
+ko.applyBindings(vm);
 						</code></pre>
 					</section>
 					<section>
 						<h2>Custom functions</h2>
+						<p>Attach the functions to the <code>fn</code> property of <em>ko.observable</em>, <em>ko.observableArray</em>, or <em>ko.computed</em>.
 						<pre><code class="javascript" data-trim>
+ko.observableArray.fn.filterByProperty = function(propName, matchValue) {
+  // http://knockoutjs.com/documentation/fn.html
+}
+
+function Task(title) {
+  this.title = ko.observable(title)
+  this.done = ko.observable(false)
+}
+
+function TaskList() {
+  this.tasks = ko.observableArray([
+    new Task(...),
+  ])
+  this.doneTasks = this.tasks.filterByProperty('done', true)
+}
 						</code></pre>
 					</section>
 					<section>

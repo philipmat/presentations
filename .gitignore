@@ -1,6 +1,7 @@
 # Temp files
 *.sw[po]
 *.*~
+*.orig
 
 # Logs
 logs

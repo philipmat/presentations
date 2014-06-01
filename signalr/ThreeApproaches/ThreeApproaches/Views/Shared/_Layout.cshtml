@@ -7,6 +7,34 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <meta name="description" content="SignalR Demo" />
+    <script>
+        var console = window['console'] || { log: function () { /*alert.apply(null, arguments)*/ } };
+        var hubSubscriptions = (function () {
+            var events = {};
+            var subs = [];
+            var registrations = function (eventName, eventHandler) {
+                if (!events.hasOwnProperty(eventName))
+                    events[eventName] = [];
+                events[eventName].push(eventHandler);
+            }
+            var execute = function (/* eventName, data[] */) {
+                var argArrays = Array.prototype.slice.call(arguments);
+                var eventName = argArrays.shift();
+                if (events.hasOwnProperty(eventName)) {
+                    events[eventName].forEach(function (handler) {
+                        try {
+                            handler.apply(null, argArrays);
+                        } finally { }
+                    })
+                }
+            }
+
+            return {
+                on: registrations,
+                trigger: execute
+            }
+        }(this));
+    </script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -22,6 +50,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li><a href="@Url.Action("Index", "Invoice")">Invoices <span id="badge-invoice" class="badge"></span></a></li>
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
                     @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
@@ -42,5 +71,21 @@
     @Scripts.Render("~/bundles/signalr")
     @Scripts.Render("~/signalr/hubs")
     @RenderSection("scripts", required: false)
+    <script>
+        $(function () {
+            var hub = $.connection.messageHub;
+            hub.client.invoiceCreated = function(newNumber) {
+                hubSubscriptions.trigger('invoiceCreated', newNumber);
+            }
+            $.connection.hub.start()
+                .done(function () { console.log("Hub started"); })
+                .fail(function () { console.log("Hub failed"); })
+
+            hubSubscriptions.on('invoiceCreated', function(newNumber) {
+                var text = $('#badge-invoice').text() || '0';
+                $('#badge-invoice').text(1 + parseInt(text, 10));
+            })
+        })
+    </script>
 </body>
 </html>

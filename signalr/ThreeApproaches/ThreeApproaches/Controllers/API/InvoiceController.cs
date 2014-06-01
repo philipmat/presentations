@@ -5,11 +5,16 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Runtime.Caching;
+using Microsoft.AspNet.SignalR.Hubs;
+using Microsoft.AspNet.SignalR;
+using ThreeApproaches.Hubs;
 
 namespace ThreeApproaches.Controllers.API
 {
     public class InvoiceController : ApiController
     {
+        private readonly static Lazy<IHubConnectionContext> _clients =
+            new Lazy<IHubConnectionContext>(() => GlobalHost.ConnectionManager.GetHubContext<MessageHub>().Clients);
         // GET: api/Invoice
         public IEnumerable<string> Get()
         {
@@ -41,6 +46,7 @@ namespace ThreeApproaches.Controllers.API
                 {
                     tmp.Add(value);
                     invoiceNumbers = tmp.ToArray();
+                    BroadcastInvoiceAdded(value);
                 }
             }
             MemoryCache.Default.Set("invoices", invoiceNumbers, DateTimeOffset.Now.AddHours(2));
@@ -74,6 +80,11 @@ namespace ThreeApproaches.Controllers.API
                 invoiceNumbers = invoiceNumbers.Except(new[]{ id }, StringComparer.OrdinalIgnoreCase).ToArray();
             }
             MemoryCache.Default.Set("invoices", invoiceNumbers, DateTimeOffset.Now.AddHours(2));
+        }
+
+        private void BroadcastInvoiceAdded(string value)
+        {
+            _clients.Value.All.invoiceCreated(value);
         }
     }
 }

@@ -13,9 +13,9 @@ namespace ThreeApproaches.Hubs
             Clients.All.hello();
         }
 
-        public void NewInvoice(string invoiceNumber)
+        public void InvoiceCreated(string invoiceNumber)
         {
-            Clients.All.newInvoice(invoiceNumber);
+            Clients.All.invoiceCreated(invoiceNumber);
         }
     }
 }

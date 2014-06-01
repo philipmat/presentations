@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Invoice Maker";
+}
+
+<h2>Invoices</h2>
+<div>
+    <form class="form-inline" role="form">
+    <input id="invoiceNo" class="form-control" type="text" value="" placeholder="New invoice number"/>
+    <input id="invoiceCreate" class="btn btn-primary" type="button" value="Create" />
+    </form>
+</div>
+
+<h4>Current Invoices</h4>
+<ul id="invoiceList">
+</ul>
+
+@section scripts {
+<script>
+    var invoiceApiUrl = "@Url.HttpRouteUrl("DefaultApi", new { controller="Invoice"})";
+    function createInvoice(invoiceNo) {
+        $.ajax(invoiceApiUrl, {
+            type: 'POST',
+            data: {'': invoiceNo},
+        }).done(function () {
+            loadInvoices();
+        })
+    }
+    function loadInvoices() {
+        $.ajax(invoiceApiUrl).done(function (data) {
+            console.log("Loaded invoices:", data)
+            data.forEach(function (value) {
+                if ($("[data-invoice-no=" + value + "]", "#invoiceList").length == 0) {
+                    $('#invoiceList').append('<li data-invoice-no="' + value + '">' + value + '</li>');
+                }
+            })
+        })
+    }
+    $(document).ready(function () {
+        console.log("HERE!")
+        loadInvoices();
+        $('#invoiceCreate').on('click', function () {
+            createInvoice($('#invoiceNo').val());
+        })
+    })
+</script>
+}

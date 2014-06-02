@@ -12,11 +12,14 @@
         var hubSubscriptions = (function () {
             var events = {};
             var subs = [];
+            var main = { on: null, trigger: null };
             var registrations = function (eventName, eventHandler) {
                 if (!events.hasOwnProperty(eventName))
                     events[eventName] = [];
                 events[eventName].push(eventHandler);
+                return main;
             }
+            main.on = registrations;
             var execute = function (/* eventName, data[] */) {
                 var argArrays = Array.prototype.slice.call(arguments);
                 var eventName = argArrays.shift();
@@ -27,12 +30,11 @@
                         } finally { }
                     })
                 }
+                return main;
             }
+            main.trigger = execute;
 
-            return {
-                on: registrations,
-                trigger: execute
-            }
+            return main;
         }(this));
     </script>
 </head>
@@ -50,7 +52,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li><a href="@Url.Action("Index", "Invoice")">Invoices <span id="badge-invoice" class="badge"></span></a></li>
+                    <li><a href="@Url.Action("Invoices", "Home")">Invoices <span id="badge-invoice" class="badge"></span></a></li>
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
                     @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>

@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+<div class="row">
+    <div class="col-md-3">Distribution Records</div>
+    <div class="col-md-2" id="number-dr">0</div>
+    <div class="col-md-6" id="message-dr"></div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">Billing Records</div>
+    <div class="col-md-1" id="number-br">0</div>
+    <div class="col-md-6" id="message-br"></div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">Invoices</div>
+    <div class="col-md-1" id="number-invoice">0</div>
+    <div class="col-md-6" id="message-invoice"></div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">Journal Entries</div>
+    <div class="col-md-1" id="number-je">0</div>
+    <div class="col-md-6" id="message-je"></div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            function received(type, message) {
+                var num = $('#number-' + type)
+                num.text(parseInt(num.text(), 10) + 1)
+                var msg = $('#message-' + type), 
+                    newMsg = $('<span class="label label-info">' + message + "</span>");
+                msg.children().remove();
+                msg.append(newMsg);
+                setTimeout(function () {
+                    newMsg.fadeOut('slow', function () {
+                        newMsg.remove();
+                    })
+                }, 2000);
+            }
+            hubSubscriptions
+                .on('distributionRecordCreated', function (newNumber) {
+                    received('dr', 'Received new Distribution Record, #' + newNumber);
+                })
+                .on('billingRecordCreated', function (newNumber) {
+                    received('br', 'Created new Billing Record, #' + newNumber);
+                })
+                .on('invoiceCreated', function (newNumber) {
+                    received('invoice', 'Created new Invoice, #' + newNumber);
+                })
+                .on('journalEntryCreated', function (newNumber) {
+                    received('je', 'Created new Journal Entry, #' + newNumber);
+                });
+        })
+    </script>
+}

@@ -19,16 +19,16 @@
         <p>
             This sample shows a simple notification service.
         </p>
-        <p><a class="btn btn-default" href="~/Invoice">Begin &raquo;</a></p>
+        <p><a class="btn btn-default" href="@Url.Action("Invoices", "Home")">Begin &raquo;</a></p>
     </div>
     <div class="col-md-4">
         <h2><i class="glyphicon glyphicon-dashboard"></i> Dashboard</h2>
         <p>A dashboard showing the status of various objects in transit</p>
-        <p><a class="btn btn-default" href="~/Dashboard">Show me &raquo;</a></p>
+        <p><a class="btn btn-default" href="@Url.Action("Dashboard", "Home")">Show me &raquo;</a></p>
     </div>
     <div class="col-md-4">
         <h2><i class="glyphicon glyphicon-filter"></i> Finders-Keepers</h2>
         <p>Displays an notification when new search matches came after a search was performed.</p>
-        <p><a class="btn btn-default" href="~/Search">Search &raquo;</a></p>
+        <p><a class="btn btn-default" href="@Url.Action("Search", "Home")">Search &raquo;</a></p>
     </div>
 </div>

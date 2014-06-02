@@ -78,7 +78,9 @@
                 hubSubscriptions.trigger('invoiceCreated', newNumber);
             }
             $.connection.hub.start()
-                .done(function () { console.log("Hub started"); })
+                .done(function () {
+                    console.log("Hub started");
+                })
                 .fail(function () { console.log("Hub failed"); })
 
             hubSubscriptions.on('invoiceCreated', function(newNumber) {

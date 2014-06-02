@@ -2,3 +2,16 @@
     ViewBag.Title = "Search Invoices";
 }
 
+<h2>Search for Invoices</h2>
+
+<button class="btn">Search</button>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            hubSubscriptions.on('invoiceCreated', function () {
+
+            })
+        })
+    </script>
+}

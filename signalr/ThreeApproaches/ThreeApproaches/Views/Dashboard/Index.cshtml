@@ -27,3 +27,13 @@
     <div class="col-md-2">0</div>
     <div class="col-md-6"></div>
 </div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            hubSubscriptions.on('invoiceCreated', function () {
+
+            })
+        })
+    </script>
+}

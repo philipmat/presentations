@@ -6,26 +6,26 @@
 
 <div class="row">
     <div class="col-md-3">Distribution Records</div>
-    <div class="col-md-2" id="number-dr">0</div>
-    <div class="col-md-6" id="message-dr"></div>
+    <div class="col-md-1"><span class="badge" id="number-dr">0</span></div>
+    <div class="col-md-6"><span class="label label-success" id="message-dr"></span></div>
 </div>
 
 <div class="row">
     <div class="col-md-3">Billing Records</div>
-    <div class="col-md-1" id="number-br">0</div>
-    <div class="col-md-6" id="message-br"></div>
+    <div class="col-md-1"><span class="badge" id="number-br">0</span></div>
+    <div class="col-md-6"><span class="label label-primary" id="message-br"></span></div>
 </div>
 
 <div class="row">
     <div class="col-md-3">Invoices</div>
-    <div class="col-md-1" id="number-invoice">0</div>
-    <div class="col-md-6" id="message-invoice"></div>
+    <div class="col-md-1"><span class="badge" id="number-invoice">0</span></div>
+    <div class="col-md-6"><span class="label label-info" id="message-invoice"></span></div>
 </div>
 
 <div class="row">
     <div class="col-md-3">Journal Entries</div>
-    <div class="col-md-1" id="number-je">0</div>
-    <div class="col-md-6" id="message-je"></div>
+    <div class="col-md-1"><span class="badge" id="number-je">0</span></div>
+    <div class="col-md-6"><span class="label label-warning" id="message-je"></span></div>
 </div>
 
 @section scripts {
@@ -36,13 +36,13 @@
                 num.text(parseInt(num.text(), 10) + 1)
                 var msg = $('#message-' + type), 
                     newMsg = $('<span class="label label-info">' + message + "</span>");
-                msg.children().remove();
-                msg.append(newMsg);
+                msg.text(message);
                 setTimeout(function () {
-                    newMsg.fadeOut('slow', function () {
-                        newMsg.remove();
+                    msg.fadeOut('slow', function () {
+                        msg.text('');
+                        msg.attr('style', '');
                     })
-                }, 2000);
+                }, 1000);
             }
             hubSubscriptions
                 .on('distributionRecordCreated', function (newNumber) {

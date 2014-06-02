@@ -76,9 +76,12 @@
     <script>
         $(function () {
             var hub = $.connection.messageHub;
-            hub.client.invoiceCreated = function(newNumber) {
-                hubSubscriptions.trigger('invoiceCreated', newNumber);
-            }
+            var messages = [ "invoiceCreated", "distributionRecordCreated", "billingRecordCreated", "journalEntryCreated" ];
+            messages.forEach(function (message) {
+                hub.client[message] = function(newNumber) {
+                    hubSubscriptions.trigger(message, newNumber);
+                }
+            })
             $.connection.hub.start()
                 .done(function () {
                     console.log("Hub started");

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Microsoft.AspNet.SignalR.Client;
 using System.Threading;
 
@@ -14,7 +11,7 @@ namespace SignalGenerator
         public static void Main(string[] args) {
             Initialize();
             Menu();
-            string msg = null;
+            string msg;
             while ((msg = Console.ReadLine()) != "0") {
                 if (msg == "1") {
                     CreateInvoice();
@@ -43,14 +40,14 @@ Choose an entry:
         
         private static void CreateInvoice() {
             Console.WriteLine("Enter invoice number. Empty to go back to menu.");
-            string msg = null;
+            string msg;
             while ((msg = Console.ReadLine()) != null) {
                 _messageHub.Invoke("InvoiceCreated", msg); //, hubConnection.ConnectionId);
             }
         }
 
 
-        public static string[] _messages = new[]{ "InvoiceCreated", "DistributionRecordCreated", "BillingRecordCreated", "JournalEntryCreated" };
+        public static string[] _messages = { "InvoiceCreated", "DistributionRecordCreated", "BillingRecordCreated", "JournalEntryCreated" };
         public static int _maxWaitMs = 500;
         private static void Flood(){
             Console.Write("How many seconds of flooding? ");
@@ -59,10 +56,11 @@ Choose an entry:
             var seconds = int.Parse(answer);
             var start = DateTime.Now;
             var rnd = new Random();
-            string endPoint = null, number = "C-{0}-{1}"; int counter = 0, endPLength = _messages.Length;
+            const string number = "C-{0}-{1}";
+            int counter = 0, endPLength = _messages.Length;
 
             while ((DateTime.Now - start).TotalSeconds < seconds) {
-                endPoint = _messages[rnd.Next(endPLength)];
+                string endPoint = _messages[rnd.Next(endPLength)];
                 _messageHub.Invoke(endPoint, string.Format(number, endPoint.Substring(0, 1), counter++));
                 Thread.Sleep(rnd.Next(_maxWaitMs));
             }

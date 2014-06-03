@@ -34,8 +34,7 @@
             function received(type, message) {
                 var num = $('#number-' + type)
                 num.text(parseInt(num.text(), 10) + 1)
-                var msg = $('#message-' + type), 
-                    newMsg = $('<span class="label label-info">' + message + "</span>");
+                var msg = $('#message-' + type);
                 msg.text(message);
                 setTimeout(function () {
                     msg.fadeOut('slow', function () {

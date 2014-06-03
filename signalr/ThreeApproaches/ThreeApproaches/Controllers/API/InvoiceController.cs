@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Runtime.Caching;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -36,7 +34,7 @@ namespace ThreeApproaches.Controllers.API
             if (string.IsNullOrWhiteSpace(value)) return;
             var invoiceNumbers = MemoryCache.Default.Get("invoices") as string[];
             if (invoiceNumbers == null) {
-                invoiceNumbers = new string[] { value };
+                invoiceNumbers = new[] { value };
                 BroadcastInvoiceAdded(value);
             } else {
                 var tmp = new List<string>(invoiceNumbers);
@@ -54,11 +52,9 @@ namespace ThreeApproaches.Controllers.API
             if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(value)) return;
             var invoiceNumbers = MemoryCache.Default.Get("invoices") as string[];
             if (invoiceNumbers == null) return;
-            else {
-                var index = Array.FindIndex(invoiceNumbers, x => string.Equals(x, id, StringComparison.OrdinalIgnoreCase));
-                if (index != -1) {
-                    invoiceNumbers[index] = value;
-                }
+            var index = Array.FindIndex(invoiceNumbers, x => string.Equals(x, id, StringComparison.OrdinalIgnoreCase));
+            if (index != -1) {
+                invoiceNumbers[index] = value;
             }
             MemoryCache.Default.Set("invoices", invoiceNumbers, DateTimeOffset.Now.AddHours(2));
         }
@@ -68,9 +64,7 @@ namespace ThreeApproaches.Controllers.API
             if (string.IsNullOrWhiteSpace(id)) return;
             var invoiceNumbers = MemoryCache.Default.Get("invoices") as string[];
             if (invoiceNumbers == null) return;
-            else {
-                invoiceNumbers = invoiceNumbers.Except(new[] { id }, StringComparer.OrdinalIgnoreCase).ToArray();
-            }
+            invoiceNumbers = invoiceNumbers.Except(new[] { id }, StringComparer.OrdinalIgnoreCase).ToArray();
             MemoryCache.Default.Set("invoices", invoiceNumbers, DateTimeOffset.Now.AddHours(2));
         }
 

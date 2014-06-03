@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
+
 using Microsoft.AspNet.SignalR;
-using System.Diagnostics;
+
 using ThreeApproaches.Support;
 using System.Threading.Tasks;
 
@@ -22,7 +20,7 @@ namespace ThreeApproaches.Hubs
         #region Helpdesk
         private readonly ConnectionMapping<string> _connections = new ConnectionMapping<string>();
 
-        public override System.Threading.Tasks.Task OnConnected() {
+        public override Task OnConnected() {
             string name = Context.User.Identity.Name;
             if (!string.IsNullOrWhiteSpace(name)) {
                 _connections.Add(name, Context.ConnectionId);
@@ -30,7 +28,7 @@ namespace ThreeApproaches.Hubs
             return base.OnConnected();
         }
 
-        public override System.Threading.Tasks.Task OnDisconnected() {
+        public override Task OnDisconnected() {
             string name = Context.User.Identity.Name;
             if (!string.IsNullOrWhiteSpace(name)) {
                 _connections.Remove(name, Context.ConnectionId);
@@ -38,7 +36,7 @@ namespace ThreeApproaches.Hubs
             return base.OnDisconnected();
         }
 
-        public override System.Threading.Tasks.Task OnReconnected() {
+        public override Task OnReconnected() {
             string name = Context.User.Identity.Name;
             if (!string.IsNullOrWhiteSpace(name)) {
                 if (!_connections.GetConnections(name).Contains(Context.ConnectionId)) {

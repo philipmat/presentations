@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Knockout.js Level 2</title>
+		<title>ASP.NET SignalR Intro and Demo</title>
 
 		<meta name="description" content="Knockout.js Level 2 - next level of techniques">
 		<meta name="author" content="Philip Mateescu">
@@ -49,11 +49,91 @@
 			<div class="slides">
 				<section>
 					<h1>ASP.NET SignalR</h1>
-					<h2>A Presentation</h2>
-					<p><small><small>&hellip; not really</small></small></p>
+					<h2>Pushing it both ways</h2>
+					<p>&nbsp;</p>
 					<p><small>Created by <a href="http://philipm.at">Philip Mateescu</a> using <a href="https://github.com/hakimel/reveal.js">reveal.js</a><br/>
 						<small>&hellip;and a lot of googling.</small>
 					</small></p>
+				</section>
+				<section>
+					<section>
+						<h1>What problem does it solve?</h1>
+						<h3 class="fragment fade-in">Server code pushing content to clients</h3>
+						<h3 class="fragment fade-in">RPC for JavaScript</h3>
+					</section>
+					<section><img src="http://i1.asp.net/media/4196527/what_is_signalr_invocation.png?cdn_id=2014-05-21-001" alt=""></section>
+					<section>
+						<h2>Applications</h2>
+						<ul>
+							<li>Messaging</li>
+							<li>Notifications, alerts</li>
+							<li>Dashboards</li>
+							<li>Logging</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+					<h1>Features</h1>
+					<ul>
+						<li>Automatic connection management</li>
+						<li>Tracks connected clients</li>
+						<li>Persistent connection</li>
+						<li>
+							Fallback mechanisms from WebSockets:
+							<ul>
+								<li>Server Sent Events (all but IE)</li>
+								<li>Forever frame (IE only)</li>
+								<li>AJAX long polling</li>
+							</ul>
+						</li>
+					</ul>
+					</section>
+					<section>
+						<h2>Architecture</h2>
+						<img src="http://i1.asp.net/media/4259622/intro_architecture.png?cdn_id=2014-05-21-001" alt="">
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>What does it look like?</h1>
+					</section>
+					<section>
+						<pre class=""><code class="cs" data-trim>
+public class MessageHub : Hub {
+  public void CallMe(string message) {
+    // send a message to all connected clients
+    Clients.All.somebodyCalled(message);
+    // or
+    var complexMessage = new Message {
+      From = Context.User.Identity.Name,
+      Content = message
+    }
+    Clients.All.somebodyCalled(complexMessage);
+  }
+}
+						</code></pre>
+						<pre class="fragment roll-in"><code class="javascript" data-trim>
+// start hub
+$.connection.hub.start();
+// listen to messages
+$.connection.messageHub.client.somebodyCalled(function(message) {
+  $('#messages').append('&lt;p&gt;' + message + '&lt;/p&gt;')
+  // or
+  $('#messages').append('&lt;p&gt;&lt;em&gt;' + message.From + '&lt;/em&gt;: ' 
+    + message.Content + '&lt;/p&gt;')
+})
+// send a message
+$('#sayHello').on('click', function() {
+  $.connection.messageHub.server.callMe("hello");
+})
+						</code></pre>
+					</section>
+					<section>
+						<h2>Yeah, but what does it<br/>
+							<em>really</em><br/>
+							look like?
+						</h2>
 				</section>
 
 			</div>

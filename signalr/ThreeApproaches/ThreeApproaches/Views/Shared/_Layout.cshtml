@@ -89,7 +89,8 @@
                             "helpRequested",
                             "peerToPeerMessage"];
             messages.forEach(function (message) {
-                hub.client[message] = function(newNumber) {
+                hub.client[message] = function (newNumber) {
+                // $.connection.messageHub.client.invoiceCreated = function (newNumber) {
                     hubSubscriptions.trigger(message, newNumber);
                 }
             })

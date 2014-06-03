@@ -41,7 +41,7 @@ Choose an entry:
         private static void CreateInvoice() {
             Console.WriteLine("Enter invoice number. Empty to go back to menu.");
             string msg;
-            while ((msg = Console.ReadLine()) != null) {
+            while (!string.IsNullOrWhiteSpace(msg = Console.ReadLine())) {
                 _messageHub.Invoke("InvoiceCreated", msg); //, hubConnection.ConnectionId);
             }
         }

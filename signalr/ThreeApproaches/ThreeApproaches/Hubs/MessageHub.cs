@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using System.Diagnostics;
+using ThreeApproaches.Support;
+using System.Threading.Tasks;
 
 namespace ThreeApproaches.Hubs
 {
@@ -13,6 +15,50 @@ namespace ThreeApproaches.Hubs
             Clients.All.hello();
         }
 
+        public Task JoinGroup(string group) {
+            return Groups.Add(Context.ConnectionId, group);
+        }
+
+        #region Helpdesk
+        private readonly ConnectionMapping<string> _connections = new ConnectionMapping<string>();
+
+        public override System.Threading.Tasks.Task OnConnected() {
+            string name = Context.User.Identity.Name;
+            if (!string.IsNullOrWhiteSpace(name)) {
+                _connections.Add(name, Context.ConnectionId);
+            }
+            return base.OnConnected();
+        }
+
+        public override System.Threading.Tasks.Task OnDisconnected() {
+            string name = Context.User.Identity.Name;
+            if (!string.IsNullOrWhiteSpace(name)) {
+                _connections.Remove(name, Context.ConnectionId);
+            }
+            return base.OnDisconnected();
+        }
+
+        public override System.Threading.Tasks.Task OnReconnected() {
+            string name = Context.User.Identity.Name;
+            if (!string.IsNullOrWhiteSpace(name)) {
+                if (!_connections.GetConnections(name).Contains(Context.ConnectionId)) {
+                    _connections.Add(name, Context.ConnectionId);
+                }
+            }
+            return base.OnReconnected();
+        }
+
+        public void Help(HelpRequest request) {
+            Clients.Group("HelpDesk").helpRequested(request);
+        }
+
+        public void PeerToPeerMessage(Message message) {
+            message.From = Context.User.Identity.Name;
+            Clients.User(message.To).peerToPeerMessage(message);
+        }
+        #endregion
+
+        #region Business
         public void InvoiceCreated(string number) {
             Clients.All.invoiceCreated(number);
         }
@@ -28,5 +74,6 @@ namespace ThreeApproaches.Hubs
         public void JournalEntryCreated(string number) {
             Clients.All.journalEntryCreated(number);
         }
+        #endregion
     }
 }

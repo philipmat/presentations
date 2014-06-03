@@ -9,7 +9,8 @@ namespace ThreeApproaches
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery.cookie.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -29,6 +30,10 @@ namespace ThreeApproaches
 
             bundles.Add(new ScriptBundle("~/bundles/signalr").Include(
                 "~/Scripts/jquery.signalR-{version}.js"
+                ));
+
+            bundles.Add(new ScriptBundle("~/app").Include(
+                "~/Scripts/app.js"
                 ));
 
             // Set EnableOptimizations to false for debugging. For more information,

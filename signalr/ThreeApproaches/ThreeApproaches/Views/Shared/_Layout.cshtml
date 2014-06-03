@@ -57,6 +57,10 @@
                     @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
                 @*@Html.Partial("_LoginPartial")*@
+                <ul class="nav navbar-nav navbar-right">
+                    <li><button id="help-button" class="btn btn-default navbar-btn">Help</button></li>
+                </ul>
+
             </div>
         </div>
     </div>
@@ -67,16 +71,23 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
+    @Html.Partial("_HelpDeskPartial")
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/signalr")
     @Scripts.Render("~/signalr/hubs")
+    @Scripts.Render("~/app")
     @RenderSection("scripts", required: false)
     <script>
         $(function () {
             var hub = $.connection.messageHub;
-            var messages = [ "invoiceCreated", "distributionRecordCreated", "billingRecordCreated", "journalEntryCreated" ];
+            var messages = ["invoiceCreated",
+                            "distributionRecordCreated",
+                            "billingRecordCreated",
+                            "journalEntryCreated",
+                            "helpRequested",
+                            "peerToPeerMessage"];
             messages.forEach(function (message) {
                 hub.client[message] = function(newNumber) {
                     hubSubscriptions.trigger(message, newNumber);
@@ -85,6 +96,10 @@
             $.connection.hub.start()
                 .done(function () {
                     console.log("Hub started");
+                    if (location.search == "?helpdesk") {
+                        hub.server.joinGroup("HelpDesk")
+                        alert("You've joined HelpDesk")
+                    }
                 })
                 .fail(function () { console.log("Hub failed"); })
 

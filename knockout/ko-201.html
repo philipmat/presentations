@@ -35,9 +35,30 @@
 		<script src="lib/js/html5shiv.js"></script>
 		<![endif]-->
 		<style type="text/css">
+		/*
+		EmojiSymbols Font (c)blockworks - Kenichi Kaneko
+		http://emojisymbols.com/
+		*/
+		@font-face {
+			font-family: "EmojiSymbols";
+			src: url('../lib/emojisymbolsfont/font/EmojiSymbols-Regular.woff') format('woff');
+			text-decoration: none;
+			font-style: normal;
+		}
+		.emj, .reveal .emj {
+			font-family: "EmojiSymbols";
+			line-height: 1;
+		}
+
 		.sample { text-align: right; }
 		.sample a:before { context: "&#x1F648;" }
+			
 		</style>
+		<script>
+		if(navigator.platform == 'Win32') {
+			document.write('<style> .reveal span.emoji { font-family: "EmojiSymbols"; line-height: 1; } </style>')
+		}
+		</script>
 	</head>
 
 	<body>
@@ -79,7 +100,7 @@ function Person(firstName, lastName) {
 
 ko.applyBindings(new Person("", "McLovin"));
 						</code></pre>
-						<div class="sample"><a href="http://codepen.io/anon/pen/iIxfk?editors=101">&#x1F648;</a></div>
+						<div class="sample"><a href="http://codepen.io/anon/pen/iIxfk?editors=101"><span class="emoji">&#x1F648;</span></a></div>
 					</section>
 					<section>
 						<h2>Works with observable arrays too</h2>
@@ -94,7 +115,7 @@ self.total = ko.computed(function() {
   return _total
 });
 						</code></pre>						
-						<div class="sample"><a href="http://codepen.io/anon/pen/aHzmg?editors=101">&#x1F648;</a></div>
+						<div class="sample"><a href="http://codepen.io/anon/pen/aHzmg?editors=101"><span class="emoji">&#x1F648;</span></a></div>
 					</section>
 					<section>
 						<h2>Deferred evaluation</h2>
@@ -187,7 +208,7 @@ function Person(firstName, lastName) {
   })
 }
 					</code></pre>
-					<div class="sample"><a href="http://codepen.io/anon/pen/ugvas?editors=101">&#x1F648;</a></div>
+					<div class="sample"><a href="http://codepen.io/anon/pen/ugvas?editors=101"><span class="emoji">&#x1F648;</span></a></div>
 				</section>
 
 
@@ -212,12 +233,12 @@ ko.applyBindings(person);
 						<h1>data-bind and CSS</h1>
 					</section>
 					<section>
-						<h2>class binding: &#x1F44D;</h2>
+						<h2>class binding: <span class="emoji">&#x1F44D;</span></h2>
 						<h3>Best approach</h3>
-						<h3>&#x1F603;&#x1F389;&#x1F37B;</h3>
+						<h3><span class="emoji">&#x1F603;</span><span class="emoji">&#x1F389;</span><span class="emoji">&#x1F37B;</span></h3>
 						<p>&nbsp;</p>
-						<h2>style binding: &#x1F44E;</h2>
-						<h3>&#x1F443;&#x1F4A9;&#x1F622;</h3>
+						<h2>style binding: <span class="emoji">&#x1F44E;</span></h2>
+						<h3><span class="emoji">&#x1F443;</span><span class="emoji">&#x1F4A9;</span><span class="emoji">&#x1F622;</span></h3>
 					</section>
 					<section>
 						<h2>class binding: inline</h2>
@@ -255,7 +276,7 @@ var StarRating = function() {
 }
 ko.applyBindings(new StarRating());
 						</code></pre>
-						<div class="sample"><a href="http://codepen.io/anon/pen/mIDsE">&#x1F648;</a></div>
+						<div class="sample"><a href="http://codepen.io/anon/pen/mIDsE"><span class="emoji">&#x1F648;</span></a></div>
 					</section>
 					<section>
 						<h2>Individual style attributes</h2>
@@ -277,7 +298,7 @@ starRating.amount.subscribe(function(newValue) {
 })
 ko.applyBindings(starRating);					</code></pre>
 					
-					<div class="sample"><a href="http://codepen.io/anon/pen/Kjren">&#x1F648;</a></div>
+					<div class="sample"><a href="http://codepen.io/anon/pen/Kjren"><span class="emoji">&#x1F648;</span></a></div>
 				</section>
 
 
@@ -311,7 +332,7 @@ ko.applyBindings(planet)	</code></pre>
   &lt;span data-bind="text: largestCountry().leader().name"&gt;&lt;/span&gt;.&lt;/div&gt;
 						</code></pre>
 					
-						<div class="sample"><a href="http://codepen.io/anon/pen/afAmK?editors=101">&#x1F648;</a></div>
+						<div class="sample"><a href="http://codepen.io/anon/pen/afAmK?editors=101"><span class="emoji">&#x1F648;</span></a></div>
 					</section>
 					<section>
 						<h2>Sub-models not (yet) available</h2>
@@ -345,7 +366,7 @@ planet.largestCountryName = ko.computed(function() {
 })	
 						</code></pre>
 					
-						<div class="sample"><a href="http://codepen.io/anon/pen/bywBe?editors=101">&#x1F648;</a></div>
+						<div class="sample"><a href="http://codepen.io/anon/pen/bywBe?editors=101"><span class="emoji">&#x1F648;</span></a></div>
 					</section>
 					<section>
 						<h3>Solution 2: using subscriptions</h3>
@@ -366,7 +387,7 @@ planet.largestCountry.subscribe(function(newValue) {
 })
 						</code></pre>
 					
-						<div class="sample"><a href="http://codepen.io/anon/pen/noEJC?editors=101">&#x1F648;</a></div>
+						<div class="sample"><a href="http://codepen.io/anon/pen/noEJC?editors=101"><span class="emoji">&#x1F648;</span></a></div>
 					</section>
 					<section>
 						<h3>Solution 3: using <em>with</em></h3>
@@ -382,7 +403,7 @@ planet.largestCountry.subscribe(function(newValue) {
   .&lt;/div&gt;
 						</code></pre>
 					
-						<div class="sample"><a href="http://codepen.io/anon/pen/CrjKc?editors=101">&#x1F648;</a></div>
+						<div class="sample"><a href="http://codepen.io/anon/pen/CrjKc?editors=101"><span class="emoji">&#x1F648;</span></a></div>
 					</section>
 				</section>
 
@@ -400,8 +421,8 @@ ko.applyBindings(viewModel2, $('#id2')[0])
 					</code></pre>
 				
 					<div class="sample">
-						<a href="http://codepen.io/anon/pen/pGeqE?editors=101">&#x1F648;</a>
-						<a href="http://codepen.io/anon/pen/KIkjh?editors=101">&#x1F649;</a>
+						<a href="http://codepen.io/anon/pen/pGeqE?editors=101"><span class="emoji">&#x1F648;</span></a>
+						<a href="http://codepen.io/anon/pen/KIkjh?editors=101"><span class="emoji">&#x1F649;</span></a>
 					</div>
 				</section>
 
@@ -410,8 +431,8 @@ ko.applyBindings(viewModel2, $('#id2')[0])
 				<section>
 					<section>
 						<h1>Arrays</h1>
-						<h2>1. They're &ldquo;arrays&rdquo; &#x1F4A9;</h2>
-						<h2>2. They stink.  &#x1F637;</h2>
+						<h2>1. They're &ldquo;arrays&rdquo; <span class="emoji">&#x1F4A9;</span></h2>
+						<h2>2. They stink.  <span class="emoji">&#x1F637;</span></h2>
 					</section>
 					<section>
 						<h2>Copying</h2>
@@ -537,7 +558,7 @@ galaxy = {
 						</li>
 					</ul>
 					
-					<div class="sample"><a href="http://codepen.io/anon/pen/bywBe?editors=101">&#x1F648;</a></div>
+					<div class="sample"><a href="http://codepen.io/anon/pen/bywBe?editors=101"><span class="emoji">&#x1F648;</span></a></div>
 				</section>
 
 
@@ -554,7 +575,7 @@ galaxy = {
 &lt;/script&gt;
 						</code></pre>
 						
-						<div class="sample"><a href="http://codepen.io/anon/pen/liaEx?editors=101">&#x1F648;</a></div>
+						<div class="sample"><a href="http://codepen.io/anon/pen/liaEx?editors=101"><span class="emoji">&#x1F648;</span></a></div>
 					</section>
 					<section>
 						<h2>Show/hide sections</h2>
@@ -582,7 +603,7 @@ ko.engineType = ko.observable()
 						
 
 
-						<div class="sample"><a href="http://codepen.io/anon/pen/svLhe?editors=101">&#x1F648;</a></div>
+						<div class="sample"><a href="http://codepen.io/anon/pen/svLhe?editors=101"><span class="emoji">&#x1F648;</span></a></div>
 					</section>
 				</section>
 
@@ -673,8 +694,8 @@ function TaskList() {
 				</section>
 
 				<section>
-					<h1>THE &#x1F51A;</h1>
-					<h1>&#x1F37B;</h1>
+					<h1>THE <span class="emoji">&#x1F51A;</span></h1>
+					<h1><span class="emj">&#x1F37B;</span></h1>
 				</section>
 			</div>
 

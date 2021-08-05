@@ -19,8 +19,8 @@ namespace EF_Conventions
         {
         }
 
-        public virtual DbSet<Album> EfcAlbums { get; set; }
-        public virtual DbSet<Artist> EfcArtists { get; set; }
+        public virtual DbSet<Album> Albums { get; set; }
+        public virtual DbSet<Artist> Artists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -89,13 +89,15 @@ namespace EF_Conventions
                 {
                     e.ToTable("efc_" + entityName);
                     e.HasKey("Id");
-                    e.Property("Id")
-                        .HasColumnName("efc_" + entityName + "_id")
-                        .HasColumnType("integer")
-                        .ValueGeneratedNever();
                     foreach (var prop in entity.GetProperties())
                     {
-                        if (prop.Name == "Id") continue;
+                        if (prop.Name == "Id") {
+                            e.Property("Id")
+                                .HasColumnName("efc_" + entityName + "_id")
+                                .HasColumnType("integer")
+                            .ValueGeneratedNever();
+                            continue;
+                        }
                         if (prop.Name.EndsWith("Id") && 
                             entityNames.Contains(prop.Name[..^2])) {
                             // it's a key
@@ -105,6 +107,7 @@ namespace EF_Conventions
                         }
                         if (prop.ClrType.IsValueType || prop.ClrType == typeof(string))
                         {
+                            // it's a simple property
                             e.Property(prop.Name)
                                 .HasColumnName(prop.Name.Underscore());
                         }

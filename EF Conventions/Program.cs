@@ -9,7 +9,9 @@ using Microsoft.Extensions.Hosting;
 
 using var ctx = new SampleContext();
 
-var artists = await ctx.EfcArtists.ToListAsync();
+var artists = await ctx.Artists
+    .Include(a => a.Albums)
+    .ToListAsync();
 Console.WriteLine(string.Join(
     Environment.NewLine,
-    artists.Select(a => $"{a.Id} - {a.ArtistName}")));
+    artists.Select(a => $"{a.Id} - {a.ArtistName} - {a.Albums.Count} albums: {string.Join("; ", a.Albums.Select(b => b.Title))}")));

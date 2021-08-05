@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Humanizer;
+using System.Linq;
 
 #nullable disable
 
@@ -17,8 +19,8 @@ namespace EF_Conventions
         {
         }
 
-        public virtual DbSet<EfcAlbum> EfcAlbums { get; set; }
-        public virtual DbSet<EfcArtist> EfcArtists { get; set; }
+        public virtual DbSet<Album> EfcAlbums { get; set; }
+        public virtual DbSet<Artist> EfcArtists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,7 +33,10 @@ namespace EF_Conventions
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EfcAlbum>(entity =>
+            DefineConventions(modelBuilder);
+
+            /*
+            modelBuilder.Entity<Album>(entity =>
             {
                 entity.ToTable("efc_album");
 
@@ -53,7 +58,7 @@ namespace EF_Conventions
                     .HasForeignKey(d => d.EfcArtistId);
             });
 
-            modelBuilder.Entity<EfcArtist>(entity =>
+            modelBuilder.Entity<Artist>(entity =>
             {
                 entity.ToTable("efc_artist");
 
@@ -66,10 +71,46 @@ namespace EF_Conventions
                     .HasColumnType("text")
                     .HasColumnName("artist_name");
             });
+            */
 
             OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        private void DefineConventions(ModelBuilder modelBuilder)
+        {
+            var entityNames = modelBuilder.Model.GetEntityTypes()
+                .Select(e => e.ShortName());
+            foreach(var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                var entityName = entity.ShortName();
+                modelBuilder.Entity(entity.Name, e =>
+                {
+                    e.ToTable("efc_" + entityName);
+                    e.HasKey("Id");
+                    e.Property("Id")
+                        .HasColumnName("efc_" + entityName + "_id")
+                        .HasColumnType("integer")
+                        .ValueGeneratedNever();
+                    foreach (var prop in entity.GetProperties())
+                    {
+                        if (prop.Name == "Id") continue;
+                        if (prop.Name.EndsWith("Id") && 
+                            entityNames.Contains(prop.Name[..^2])) {
+                            // it's a key
+                            e.Property(prop.Name)
+                                .HasColumnName("efc_" + prop.Name.Underscore());
+                            continue;
+                        }
+                        if (prop.ClrType.IsValueType || prop.ClrType == typeof(string))
+                        {
+                            e.Property(prop.Name)
+                                .HasColumnName(prop.Name.Underscore());
+                        }
+                    }
+                });
+            }
+        }
     }
 }

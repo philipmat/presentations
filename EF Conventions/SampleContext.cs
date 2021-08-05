@@ -36,7 +36,7 @@ namespace EF_Conventions
             DefineConventions(modelBuilder);
 
             /*
-            modelBuilder.Entity<Album>(entity =>
+            modelBuilder.Entity<EfcAlbum>(entity =>
             {
                 entity.ToTable("efc_album");
 
@@ -58,7 +58,7 @@ namespace EF_Conventions
                     .HasForeignKey(d => d.EfcArtistId);
             });
 
-            modelBuilder.Entity<Artist>(entity =>
+            modelBuilder.Entity<EfcArtist>(entity =>
             {
                 entity.ToTable("efc_artist");
 

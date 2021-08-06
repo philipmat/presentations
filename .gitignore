@@ -58,3 +58,4 @@ PublishProfiles/
 *.log
 *.vspx
 App_Data/
+python/.venv*
